@@ -185,7 +185,9 @@ class webservice_restful_server extends webservice_base_server {
         } else if ($this->requestformat == 'xml') {
             $parametersxml = simplexml_load_string($content);
             $parameters = json_decode(json_encode($parametersxml), true); // Dirty XML to JSON to PHP array conversion.
-        } else {  // Data provided in as URL encoded.
+        } else if ($_SERVER['REQUEST_METHOD'] == 'GET') {  // Data provided in as URL encoded.
+            $parameters = $_GET;
+        } else {
             $parameters = $_POST;
         }
 
